@@ -1,6 +1,11 @@
 import "./App.css";
 import { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 // Components
 import Navbar from "./components/Navbar";
@@ -13,9 +18,34 @@ import ProductScreen from "./screens/ProductScreen";
 import CartScreen from "./screens/CartScreen";
 import Register from "./screens/Register.jsx";
 import Login from "./screens/Login.jsx";
+import Checkout from "./screens/Checkout.jsx";
+import { useSelector } from "react-redux";
 
 function App() {
   const [sideToggle, setSideToggle] = useState(false);
+
+  const user = useSelector((state) => state.user);
+  const { userDetails } = user;
+
+  function PrivateRoute({ children, ...rest }) {
+    return (
+      <Route
+        {...rest}
+        render={({ location }) =>
+          userDetails ? (
+            children
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: { from: location },
+              }}
+            />
+          )
+        }
+      />
+    );
+  }
 
   return (
     <Router>
@@ -29,6 +59,9 @@ function App() {
           <Route exact path="/cart" component={CartScreen} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
+          <PrivateRoute exact path="/checkout">
+            <Checkout />
+          </PrivateRoute>
         </Switch>
       </main>
     </Router>
