@@ -6,9 +6,7 @@ export const setUser = (user) => (dispatch, getState) => {
     payload: user,
   });
 
-  localStorage.setItem("user", JSON.stringify(getState().user.userDetails));
-  localStorage.setItem(
-    "token",
-    JSON.stringify(getState().user.userDetails.token)
-  );
+  if (getState().user.userDetails)
+    localStorage.setItem("user", JSON.stringify(getState().user.userDetails));
+  else localStorage.removeItem("user");
 };
