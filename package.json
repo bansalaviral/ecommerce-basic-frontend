@@ -1,6 +1,6 @@
 {
   "name": "mern-shoppingcart-redux-frontend",
-  "proxy": "https://ecommerce-basic-backend.vercel.app",
+  "proxy": "https://ecommerce-basic-backend.vercel.app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
