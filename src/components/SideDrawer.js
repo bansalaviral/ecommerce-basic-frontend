@@ -1,15 +1,28 @@
 import "./SideDrawer.css";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../redux/actions/userActions";
 
 const SideDrawer = ({ show, click }) => {
   const sideDrawerClass = ["sidedrawer"];
+  const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
+  const user = useSelector((state) => state.user);
+  const { userDetails } = user;
+
+  // const getCartCount = () => {
+  //   return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0);
+  // };
+
   const getCartCount = () => {
-    return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0);
+    return cartItems.length;
+  };
+
+  const handleLogout = () => {
+    dispatch(setUser(null));
   };
 
   if (show) {
@@ -19,9 +32,16 @@ const SideDrawer = ({ show, click }) => {
   return (
     <div className={sideDrawerClass.join(" ")}>
       <ul className="sidedrawer__links" onClick={click}>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
+        {!userDetails ? (
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+        ) : null}
+        {userDetails ? (
+          <li>
+            <p onClick={handleLogout}>Logout</p>
+          </li>
+        ) : null}
         <li>
           <Link to="/cart">
             <i className="fas fa-shopping-cart"></i>

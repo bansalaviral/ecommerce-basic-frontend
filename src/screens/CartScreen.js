@@ -1,7 +1,7 @@
 import "./CartScreen.css";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // Components
 import CartItem from "../components/CartItem";
@@ -10,10 +10,14 @@ import CartItem from "../components/CartItem";
 import { addToCart, removeFromCart } from "../redux/actions/cartActions";
 
 const CartScreen = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+
+  const user = useSelector((state) => state.user);
+  const { userDetails } = user;
 
   useEffect(() => {}, []);
 
@@ -63,7 +67,14 @@ const CartScreen = () => {
             <p>${getCartSubTotal()}</p>
           </div>
           <div>
-            <button>Proceed To Checkout</button>
+            {userDetails && (
+              <button onClick={() => history.push("/checkout")}>
+                Proceed To Checkout
+              </button>
+            )}
+            {!userDetails && (
+              <button onClick={() => history.push("/login")}>Login</button>
+            )}
           </div>
         </div>
       </div>

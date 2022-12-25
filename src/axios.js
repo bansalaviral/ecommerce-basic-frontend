@@ -7,7 +7,7 @@ const instance = axios.create({
     "Acess-Control-Allow-Origin": "*",
     Authorization: `Bearer ${
       localStorage.getItem("user")
-        ? JSON.parse(localStorage.getItem("user"))
+        ? JSON.parse(localStorage.getItem("user")).token
         : ""
     }`,
     Accept: "application/json",

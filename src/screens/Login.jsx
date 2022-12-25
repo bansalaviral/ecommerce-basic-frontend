@@ -1,24 +1,29 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import axios from "axios";
+import { setUser } from "../redux/actions/userActions.js";
+import axios from "../axios";
 import "./Login.css";
+import { useDispatch } from "react-redux";
+
 const Login = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
   const handleSubmit = async () => {
     try {
-      const resp = await axios.post("http://localhost:3000/api/users/login", {
+      const { data } = await axios.post("api/users/login", {
         email,
         password,
       });
+
+      dispatch(setUser(data));
       history.goBack();
-      console.log(resp.data);
     } catch (err) {
       setError(err.response.data.message);
-      console.log(err.response.data.message);
     }
   };
   return (
@@ -40,9 +45,9 @@ const Login = () => {
       </div>
       <div className="input-container ic2">
         <input
-          id="lastname"
+          id="password"
           className="input"
-          type="text"
+          type="password"
           placeholder=" "
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -52,12 +57,15 @@ const Login = () => {
         </label>
       </div>
       <button type="text" className="submit" onClick={handleSubmit}>
-        submit
+        Submit
       </button>
       <div>
         <p style={{ color: "white", textAlign: "center", marginTop: "10px" }}>
           Didn't sign up yet?{" "}
-          <Link to="/register" style={{ color: "#08d", textDecoration: "none" }}>
+          <Link
+            to="/register"
+            style={{ color: "#08d", textDecoration: "none" }}
+          >
             Register
           </Link>
         </p>

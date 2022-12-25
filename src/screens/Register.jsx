@@ -24,7 +24,6 @@ const Register = () => {
 
       dispatch(setUser(data));
       history.push("/");
-      
     } catch (err) {
       setError(err.response.data.message);
       dispatch(setUser(null));
@@ -76,7 +75,7 @@ const Register = () => {
         </label>
       </div>
       <button type="text" className="submit" onClick={handleSubmit}>
-        submit
+        Submit
       </button>
       {error && (
         <p className="error" style={{ color: "red" }}>

@@ -8,11 +8,16 @@ const Navbar = ({ click }) => {
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+
   const user = useSelector((state) => state.user);
   const { userDetails } = user;
 
+  // const getCartCount = () => {
+  //   return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0);
+  // };
+
   const getCartCount = () => {
-    return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0);
+    return cartItems.length;
   };
 
   const handleLogout = () => {
@@ -22,25 +27,20 @@ const Navbar = ({ click }) => {
   return (
     <nav className="navbar">
       <div className="navbar__logo">
-        <h2>MERN Shopping Cart</h2>
+        <h2>MERN Ecommerce</h2>
       </div>
 
       <ul className="navbar__links">
-        {!userDetails && (
+        {!userDetails ? (
           <li>
             <Link to="/login">Login</Link>
           </li>
-        )}
-        {userDetails && (
+        ) : null}
+        {userDetails ? (
           <li>
-            <span
-              style={{ color: "white", fontSize: "1.2rem", cursor: "pointer" }}
-              onClick={handleLogout}
-            >
-              Logout
-            </span>
+            <p onClick={handleLogout}>Logout</p>
           </li>
-        )}
+        ) : null}
         <li>
           <Link to="/cart" className="cart__link">
             <i className="fas fa-shopping-cart"></i>
