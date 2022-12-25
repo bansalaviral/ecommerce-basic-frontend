@@ -25,7 +25,8 @@
   padding-left: 1.5rem;
 }
 
-.navbar__links > li > a {
+.navbar__links > li > a,
+.navbar__links > li > p {
   text-decoration: none;
   color: #f4f4f4;
   font-size: 1.2rem;

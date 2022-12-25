@@ -38,7 +38,9 @@ const Navbar = ({ click }) => {
         ) : null}
         {userDetails ? (
           <li>
-            <p onClick={handleLogout}>Logout</p>
+            <p style={{ cursor: "pointer" }} onClick={handleLogout}>
+              Logout
+            </p>
           </li>
         ) : null}
         <li>

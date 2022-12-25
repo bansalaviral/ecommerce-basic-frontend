@@ -28,12 +28,14 @@
   align-items: center;
 }
 
-.sidedrawer__links > li > a:hover {
+.sidedrawer__links > li > a:hover,
+.sidedrawer__links > li > p:hover {
   background: #333;
   color: #f4f4f4;
 }
 
-.sidedrawer__links > li > a {
+.sidedrawer__links > li > a,
+.sidedrawer__links > li > p {
   display: flex;
   align-items: center;
   justify-content: center;
