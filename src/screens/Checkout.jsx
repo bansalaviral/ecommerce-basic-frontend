@@ -45,7 +45,7 @@ const Checkout = () => {
       }
     };
     updateCart();
-  }, []);
+  }, [cartItems]);
 
   return (
     <>

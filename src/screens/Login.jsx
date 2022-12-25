@@ -21,7 +21,8 @@ const Login = () => {
       });
 
       dispatch(setUser(data));
-      history.goBack();
+
+      history.push("/");
     } catch (err) {
       setError(err.response.data.message);
     }
