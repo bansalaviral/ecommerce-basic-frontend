@@ -1,7 +1,7 @@
 import axios from "axios";
-
+console.log(process.env.REACT_APP_BASE_URI);
 const instance = axios.create({
-  // baseURL: "www.google.com/",
+  baseURL: process.env.REACT_APP_BASE_URI,
   headers: {
     "Content-Type": "application/json",
     "Acess-Control-Allow-Origin": "*",

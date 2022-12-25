@@ -1,9 +1,10 @@
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/actions/userActions";
 
 const Navbar = ({ click }) => {
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
@@ -27,7 +28,7 @@ const Navbar = ({ click }) => {
   return (
     <nav className="navbar">
       <div className="navbar__logo">
-        <h2>MERN Ecommerce</h2>
+        <h2 onClick={() => history.push("/")}>MERN Ecommerce</h2>
       </div>
 
       <ul className="navbar__links">
