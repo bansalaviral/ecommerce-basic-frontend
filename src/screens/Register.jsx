@@ -16,7 +16,7 @@ const Register = () => {
 
   const handleSubmit = async () => {
     try {
-      const { data } = await axios.post("/api/users/register", {
+      const { data } = await axios().post("/api/users/register", {
         name,
         email,
         password,

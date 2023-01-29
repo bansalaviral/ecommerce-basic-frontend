@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import axios from "../axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./Checkout.css";
 import { useState } from "react";
+import { cartReset } from "../redux/actions/cartActions";
 
 const Checkout = () => {
+  const dispatch = useDispatch();
+
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
@@ -27,25 +30,26 @@ const Checkout = () => {
       .toFixed(2);
   };
 
-  useEffect(() => {
-    setPaid(false);
-    const updateCart = async () => {
-      try {
-        const modifiedCartItems = cartItems.map((item) => {
-          return {
-            id: item.product,
-            qty: item.qty,
-          };
-        });
-        await axios.patch("/api/users/updateCart", {
-          cartItems: modifiedCartItems,
-        });
-      } catch (error) {
-        console.log(error.reponse.data.message);
-      }
-    };
-    updateCart();
-  }, [cartItems]);
+  const handleOrder = async () => {
+    try {
+      const items = cartItems.map((item) => {
+        return {
+          id: item.product,
+          qty: item.qty,
+        };
+      });
+
+      await axios().patch("/api/users/order", {
+        cartItems: items,
+      });
+
+      dispatch(cartReset());
+
+    } catch (error) {
+      console.log(error.reponse.data.message);
+      setPaid(false);
+    }
+  };
 
   return (
     <>
@@ -84,7 +88,7 @@ const Checkout = () => {
           </div>
           <div>
             {userDetails && (
-              <button onClick={() => setPaid(true)}>
+              <button onClick={handleOrder}>
                 {!paid ? `Pay ${getCartSubTotal()}` : `Done ✅`}
               </button>
             )}
