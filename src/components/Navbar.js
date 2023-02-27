@@ -55,6 +55,11 @@ const Navbar = ({ click }) => {
         <li>
           <Link to="/">Shop</Link>
         </li>
+        {userDetails ? (
+          <li>
+            <Link to="/orders">Orders</Link>
+          </li>
+        ) : null}
       </ul>
 
       <div className="hamburger__menu" onClick={click}>

@@ -19,6 +19,8 @@ import CartScreen from "./screens/CartScreen";
 import Register from "./screens/Register.jsx";
 import Login from "./screens/Login.jsx";
 import Checkout from "./screens/Checkout.jsx";
+import OrdersScreen from "./screens/OrdersScreen";
+
 import { useSelector } from "react-redux";
 
 function App() {
@@ -61,6 +63,9 @@ function App() {
           <Route exact path="/login" component={Login} />
           <PrivateRoute exact path="/checkout">
             <Checkout />
+          </PrivateRoute>
+          <PrivateRoute exact path="/orders">
+            <OrdersScreen />
           </PrivateRoute>
         </Switch>
       </main>

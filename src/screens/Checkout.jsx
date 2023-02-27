@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import axios from "../axios";
 import { useDispatch, useSelector } from "react-redux";
-import "./Checkout.css";
-import { useState } from "react";
 import { cartReset } from "../redux/actions/cartActions";
+import { useHistory } from "react-router-dom";
+
+import "./Checkout.css";
 
 const Checkout = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -44,7 +46,7 @@ const Checkout = () => {
       });
 
       dispatch(cartReset());
-
+      history.push("/orders");
     } catch (error) {
       console.log(error.reponse.data.message);
       setPaid(false);

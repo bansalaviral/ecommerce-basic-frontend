@@ -56,6 +56,11 @@ const SideDrawer = ({ show, click }) => {
         <li>
           <Link to="/">Shop</Link>
         </li>
+        {userDetails ? (
+          <li>
+            <Link to="/orders">Orders</Link>
+          </li>
+        ) : null}
       </ul>
     </div>
   );
