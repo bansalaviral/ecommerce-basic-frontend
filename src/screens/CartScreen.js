@@ -61,22 +61,24 @@ const CartScreen = () => {
           )}
         </div>
 
-        <div className="cartscreen__right">
-          <div className="cartscreen__info">
-            <p>Subtotal ({getCartCount()}) items</p>
-            <p>${getCartSubTotal()}</p>
+        {getCartCount() >= 1 ? (
+          <div className="cartscreen__right">
+            <div className="cartscreen__info">
+              <p>Subtotal ({getCartCount()}) items</p>
+              <p>${getCartSubTotal()}</p>
+            </div>
+            <div>
+              {userDetails && (
+                <button onClick={() => history.push("/checkout")}>
+                  Proceed To Checkout
+                </button>
+              )}
+              {!userDetails && (
+                <button onClick={() => history.push("/login")}>Login</button>
+              )}
+            </div>
           </div>
-          <div>
-            {userDetails && (
-              <button onClick={() => history.push("/checkout")}>
-                Proceed To Checkout
-              </button>
-            )}
-            {!userDetails && (
-              <button onClick={() => history.push("/login")}>Login</button>
-            )}
-          </div>
-        </div>
+        ) : null}
       </div>
     </>
   );
