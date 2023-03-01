@@ -1,16 +1,10 @@
 import React from "react";
 import axios from "../axios";
 import { useSelector } from "react-redux";
-import { loadStripe } from "@stripe/stripe-js";
 
 import "./Checkout.css";
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_API_KEY);
-
 const Checkout = () => {
-  // const dispatch = useDispatch();
-  // const history = useHistory();
-
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
@@ -32,7 +26,6 @@ const Checkout = () => {
   };
 
   const handleOrder = async () => {
-    const stripe = await stripePromise;
     try {
       const items = cartItems.map((item) => {
         return {
@@ -46,17 +39,7 @@ const Checkout = () => {
         cartItems: items,
       });
 
-      //Redirect user to Stripe checkout
-      const result = await stripe.redirectToCheckout({
-        sessionId: data.id,
-      });
-
-      if (result.error) {
-        alert(result.error.message);
-      }
-
-      // dispatch(cartReset());
-      // history.push("/orders");
+      window.location.href = data.url;
     } catch (error) {
       console.log(error.reponse.data.message);
     }
