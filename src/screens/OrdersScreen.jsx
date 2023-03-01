@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "../axios";
 import { formatDistance } from "date-fns";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { cartReset } from "../redux/actions/cartActions";
 import "./OrdersScreen.css";
 
 const Checkout = () => {
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  //   const user = useSelector((state) => state.user);
-  //   const { userDetails } = user;
+  // const user = useSelector((state) => state.user);
+  // const { userDetails } = user;
 
   const [orderItems, setOrderItems] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,8 +17,8 @@ const Checkout = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
-      const { data } = await axios().get("/api/users/order");
 
+      const { data } = await axios().get("/api/orders");
       const modifiedData = data.reduce((acc, cur) => {
         if (acc.hasOwnProperty(cur.createdAt)) {
           const { createdAt, ...rest } = cur;
@@ -28,12 +29,23 @@ const Checkout = () => {
 
         return acc;
       }, {});
+      setOrderItems(modifiedData);
+
+      const url = new URLSearchParams(window.location.search);
+      const session_id = url.get("session_id");
+      if (session_id) {
+        const isvalidPayment = await axios().get(
+          `/api/stripe/check?session_id=${session_id}`
+        );
+        if (isvalidPayment) {
+          dispatch(cartReset());
+        }
+      }
 
       setLoading(false);
-      setOrderItems(modifiedData);
     };
     fetchOrders();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

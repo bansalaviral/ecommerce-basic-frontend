@@ -1,22 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "../axios";
-import { useDispatch, useSelector } from "react-redux";
-import { cartReset } from "../redux/actions/cartActions";
-import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { loadStripe } from "@stripe/stripe-js";
 
 import "./Checkout.css";
 
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_API_KEY);
+
 const Checkout = () => {
-  const dispatch = useDispatch();
-  const history = useHistory();
+  // const dispatch = useDispatch();
+  // const history = useHistory();
 
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
   const user = useSelector((state) => state.user);
   const { userDetails } = user;
-
-  const [paid, setPaid] = useState(false);
 
   const getCartCount = () => {
     return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0);
@@ -33,6 +32,7 @@ const Checkout = () => {
   };
 
   const handleOrder = async () => {
+    const stripe = await stripePromise;
     try {
       const items = cartItems.map((item) => {
         return {
@@ -41,15 +41,24 @@ const Checkout = () => {
         };
       });
 
-      await axios().patch("/api/users/order", {
+      // Call the backend to create a checkout session
+      const { data } = await axios().post("/api/orders", {
         cartItems: items,
       });
 
-      dispatch(cartReset());
-      history.push("/orders");
+      //Redirect user to Stripe checkout
+      const result = await stripe.redirectToCheckout({
+        sessionId: data.id,
+      });
+
+      if (result.error) {
+        alert(result.error.message);
+      }
+
+      // dispatch(cartReset());
+      // history.push("/orders");
     } catch (error) {
       console.log(error.reponse.data.message);
-      setPaid(false);
     }
   };
 
@@ -91,7 +100,7 @@ const Checkout = () => {
           <div>
             {userDetails && (
               <button onClick={handleOrder}>
-                {!paid ? `Pay ${getCartSubTotal()}` : `Done ✅`}
+                {`Pay $${getCartSubTotal()}`}
               </button>
             )}
             {!userDetails && <button>Login</button>}
